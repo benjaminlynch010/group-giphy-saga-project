@@ -18,14 +18,25 @@ function* fetchGifList() {
   yield put ({ type: 'SET_GIF_LIST', payload: gifList.data })
 }
 
-const store = createStore(
-  combineReducers({ }),
-  applyMiddleware( sagaMiddleware, logger )
-)
+const gifReducer = ( state = [], action ) => {
+  switch(action.type) {
+    case 'SET_GIF_LIST':
+      return action.payload
+    default: 
+      return state
+  }
+}
 
 const sagaMiddleware = createSagaMiddleware()
 
-saga.Middleware.run( rootSaga )
+const store = createStore(
+  combineReducers({ 
+    gifReducer,
+  }),
+  applyMiddleware( sagaMiddleware, logger )
+)
+
+sagaMiddleware.run( rootSaga )
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
