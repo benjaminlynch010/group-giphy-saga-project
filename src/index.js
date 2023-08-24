@@ -14,8 +14,8 @@ function* rootSaga() {
 }
 
 function* fetchGifList() {
-  const gifList = yield axios.get('/api/favorite')
-  yield put ({ type: 'SET_GIF_LIST', payload: gifList.data })
+  const gifList = yield axios.get('/api/category')
+  yield put ({ type: 'SET_GIF_LIST', payload: gifList.data})
 }
 
 const gifReducer = ( state = [], action ) => {
