@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter as Router, Route, Link } from 'react-router-dom/cjs/react-router-dom';
 import Search from '../Search/Search';
-
+import Favorites from '../Favorites/Favorites';
 
 
 
@@ -14,6 +14,11 @@ function App(props) {
 
         <Route path='/' exact>
           <Search />
+        </Route>
+
+
+        <Route path='/favorites' exact>
+          <Favorites />
         </Route>
 
       </Router>
