@@ -1,42 +1,47 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 function Search() {
   const dispatch = useDispatch();
-  const gifData = useSelector((state) => state.gifData);
-  console.log("Gif Data :", gifData);
+  const gifReducer = useSelector(store => store.gifReducer)
+  console.log("Gif Data :", gifReducer);
+  const [searchInput, setSearchInput] = useState('');
 
-  const getGifs = () => {
-    dispatch({ type: "GET_GIFS", payload: gifData });
-  };
-
-  useEffect(() => {
-    getGifs();
-  }, []);
+// Send dispatch to SAGA_FETCH_SEARCH using searchQuery 
+const handleSubmit = (event) => {
+  event.preventDefault();
+  
+  dispatch({
+    type: 'SAGA_FETCH_SEARCH',
+    payload: searchInput
+  }) 
+}
 
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <input
             type="search"
             id="mySearch"
-            name="q"
+            value={searchInput}
             placeholder="Search gifs"
-            size="30"
+            onChange={(event) => setSearchInput(event.target.value)}
           />
-          <button>Search</button>
-          {/* {gifData.map((giphyItem, index) => (
-            <img
-              key={index}
-              src={giphyItem.images.original.url}
-              alt="GIF HERE"
-            />
-          ))} */}
+          <button type="submit">Search</button>
         </div>
       </form>
+      <div>
+        {/* map over the results array and render each image */}
+        {gifReducer.map((image) => (
+          // Use src={image.images.fixed_height.url} for the desired image size
+          <img key={image.id} src={image.images.fixed_height.url} alt="GIF" />
+        ))}
+      </div>
     </>
   );
-}
 
+}
 export default Search;
